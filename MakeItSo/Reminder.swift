@@ -5,7 +5,18 @@
 //  Created by Migovich on 19.04.2025.
 //
 
-struct Reminder {
+import Foundation
+
+struct Reminder: Identifiable {
+    let id: UUID = UUID()
     var title: String
     var isCompleted: Bool = false
+}
+
+extension Reminder {
+    static let samples: [Reminder] = [
+        .init(title: "Make it so", isCompleted: true),
+        .init(title: "Make it so again"),
+        .init(title: "Make it so once more"),
+    ]
 }
