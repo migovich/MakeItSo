@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  RemindersListView.swift
 //  MakeItSo
 //
 //  Created by Migovich on 19.04.2025.
@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct RemindersListView: View {
     
-    @State private var reminders = Reminder.samples
+    @StateObject private var viewModel = RemindersListViewModel()
     @State private var isAddReminderPresented = false
     
     private func presendAddReminderView() {
@@ -17,13 +17,13 @@ struct ContentView: View {
     }
     
     var body: some View {
-        List($reminders) { $reminder in
+        List($viewModel.reminders) { $reminder in
             HStack {
                 Image(systemName: reminder.isCompleted ? "checkmark.circle.fill" : "circle")
                     .imageScale(.large)
                     .foregroundStyle(.tint)
                     .onTapGesture {
-                        reminder.isCompleted.toggle()
+                        viewModel.toggleCompleted(reminder)
                     }
                 Text(reminder.title)
             }
@@ -41,7 +41,7 @@ struct ContentView: View {
         }
         .sheet(isPresented: $isAddReminderPresented) {
             AddReminderView { reminder in
-                reminders.append(reminder)
+                viewModel.addReminder(reminder)
             }
         }
     }
@@ -49,7 +49,7 @@ struct ContentView: View {
 
 #Preview {
     NavigationStack {
-        ContentView()
+        RemindersListView()
             .navigationTitle("Reminders")
     }
 }
