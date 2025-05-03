@@ -18,15 +18,7 @@ struct RemindersListView: View {
     
     var body: some View {
         List($viewModel.reminders) { $reminder in
-            HStack {
-                Image(systemName: reminder.isCompleted ? "checkmark.circle.fill" : "circle")
-                    .imageScale(.large)
-                    .foregroundStyle(.tint)
-                    .onTapGesture {
-                        viewModel.toggleCompleted(reminder)
-                    }
-                Text(reminder.title)
-            }
+            RemindersListRowView(reminder: $reminder)
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
