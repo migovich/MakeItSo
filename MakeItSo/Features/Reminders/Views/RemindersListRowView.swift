@@ -24,7 +24,13 @@ struct RemindersListRowView: View {
 }
 
 #Preview {
-    StatefulPreviewWrapper(Reminder.samples[0]) { reminder in
-        RemindersListRowView(reminder: reminder)
+    NavigationView {
+        List {
+            StatefulPreviewWrapper(Reminder.samples[0]) { reminder in
+                RemindersListRowView(reminder: reminder)
+            }
+            .listStyle(.plain)
+        }
+        .navigationTitle("Reminders")
     }
 }
