@@ -24,7 +24,7 @@ public class RemindersRepository: ObservableObject {
     
     func subscribe() {
         guard listenerRegistration == nil else { return }
-        let query = Firestore.firestore().collection("reminders")
+        let query = Firestore.firestore().collection(Reminder.collectionName)
         listenerRegistration = query
             .addSnapshotListener { [weak self] (querySnapshot, error) in
                 guard let documents = querySnapshot?.documents else {
@@ -46,7 +46,7 @@ public class RemindersRepository: ObservableObject {
     func addReminder(_ reminder: Reminder) throws {
         try Firestore
             .firestore()
-            .collection("reminders")
+            .collection(Reminder.collectionName)
             .addDocument(from: reminder)
     }
     

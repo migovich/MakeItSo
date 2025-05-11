@@ -21,3 +21,7 @@ extension Reminder {
         .init(title: "Make it so once more"),
     ]
 }
+
+extension Reminder {
+    static let collectionName = "reminders"
+}
