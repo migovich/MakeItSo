@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
-struct Reminder: Identifiable {
-    let id: UUID = UUID()
+struct Reminder: Identifiable, Codable {
+    @DocumentID var id: String?
     var title: String
     var isCompleted: Bool = false
 }
