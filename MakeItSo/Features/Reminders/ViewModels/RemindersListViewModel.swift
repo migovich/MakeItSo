@@ -6,12 +6,19 @@
 //
 
 import Foundation
+import Combine
 
 class RemindersListViewModel: ObservableObject {
-    @Published var reminders = Reminder.samples
+    @Published var reminders: [Reminder] = []
     @Published var errorMessage: String?
     
     private var remindersRepository = RemindersRepository()
+    
+    init() {
+        remindersRepository
+            .$reminders
+            .assign(to: &$reminders)
+    }
     
     func addReminder(_ reminder: Reminder) {
         do {

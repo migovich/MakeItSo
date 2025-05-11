@@ -12,9 +12,20 @@ public class RemindersRepository: ObservableObject {
     
     @Published var reminders = [Reminder]()
     
+    private var listenerRegistration: ListenerRegistration?
+    
+    init() {
+        subscribe()
+    }
+    
+    deinit {
+        unsubscribe()
+    }
+    
     func subscribe() {
+        guard listenerRegistration == nil else { return }
         let query = Firestore.firestore().collection("reminders")
-        query
+        listenerRegistration = query
             .addSnapshotListener { [weak self] (querySnapshot, error) in
                 guard let documents = querySnapshot?.documents else {
                     print("No documents")
@@ -37,5 +48,11 @@ public class RemindersRepository: ObservableObject {
             .firestore()
             .collection("reminders")
             .addDocument(from: reminder)
+    }
+    
+    private func unsubscribe() {
+        guard listenerRegistration != nil else { return }
+        listenerRegistration?.remove()
+        listenerRegistration = nil
     }
 }
