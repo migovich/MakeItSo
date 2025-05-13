@@ -50,6 +50,17 @@ public class RemindersRepository: ObservableObject {
             .addDocument(from: reminder)
     }
     
+    func updateReminder(_ reminder: Reminder) throws {
+        guard let documentId = reminder.id else {
+            fatalError("Reminder \(reminder.title) has no document ID.")
+        }
+        try Firestore
+            .firestore()
+            .collection(Reminder.collectionName)
+            .document(documentId)
+            .setData(from: reminder, merge: true)
+    }
+    
     private func unsubscribe() {
         guard listenerRegistration != nil else { return }
         listenerRegistration?.remove()
