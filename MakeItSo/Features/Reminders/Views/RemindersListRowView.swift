@@ -15,7 +15,9 @@ struct RemindersListRowView: View {
             Toggle(isOn: $reminder.isCompleted) {}
                 .toggleStyle(.reminder)
             Text(reminder.title)
+            Spacer()
         }
+        .contentShape(Rectangle())
     }
 }
 
