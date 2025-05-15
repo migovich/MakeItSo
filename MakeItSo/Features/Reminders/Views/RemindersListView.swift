@@ -11,6 +11,7 @@ struct RemindersListView: View {
     
     @StateObject private var viewModel = RemindersListViewModel()
     @State private var isAddReminderPresented = false
+    @State private var editableReminder: Reminder? = nil
     
     private func presendAddReminderView() {
         isAddReminderPresented.toggle()
@@ -21,6 +22,9 @@ struct RemindersListView: View {
             RemindersListRowView(reminder: $reminder)
                 .onChange(of: reminder.isCompleted) { oldValue, newValue in
                     viewModel.setCompleted(reminder, isCompleted: newValue)
+                }
+                .onTapGesture {
+                    editableReminder = reminder
                 }
         }
         .toolbar {
@@ -35,10 +39,15 @@ struct RemindersListView: View {
             }
         }
         .sheet(isPresented: $isAddReminderPresented) {
-            AddReminderView { reminder in
+            EditReminderDetailsView { reminder in
                 viewModel.addReminder(reminder)
             }
         }
+        .sheet(item: $editableReminder, content: { reminder in
+            EditReminderDetailsView(mode: .edit, reminder: reminder) { reminder in
+                viewModel.updateReminder(reminder)
+            }
+        })
         .tint(.red)
     }
 }
