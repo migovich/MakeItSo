@@ -18,7 +18,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         let useEmulator = UserDefaults.standard.bool(forKey: "useEmulator")
         if useEmulator {
             let settings = Firestore.firestore().settings
-            settings.host = "localhost:8081"
+            settings.host = "localhost:8080"
             settings.isSSLEnabled = false
             Firestore.firestore().settings = settings
             

@@ -26,6 +26,14 @@ struct RemindersListView: View {
                 .onTapGesture {
                     editableReminder = reminder
                 }
+                .swipeActions(edge: .trailing) {
+                    Button(role: .destructive) {
+                        viewModel.deleteReminder(reminder)
+                    } label: {
+                        Image(systemName: "trash")
+                    }
+                    .tint(.red)
+                }
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
