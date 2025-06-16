@@ -12,6 +12,7 @@ struct Reminder: Identifiable, Codable {
     @DocumentID var id: String?
     var title: String
     var isCompleted: Bool = false
+    var userId: String?
 }
 
 extension Reminder {

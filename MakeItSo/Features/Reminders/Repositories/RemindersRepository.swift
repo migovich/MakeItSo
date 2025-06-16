@@ -9,6 +9,7 @@ import Foundation
 import Factory
 import FirebaseFirestore
 import FirebaseAuth
+import Combine
 
 public class RemindersRepository: ObservableObject {
     
@@ -20,21 +21,28 @@ public class RemindersRepository: ObservableObject {
     @Published var user: User? = nil
     
     private var listenerRegistration: ListenerRegistration?
+    private var cancelables = Set<AnyCancellable>()
     
     init() {
         authenticationService.$user
             .assign(to: &$user)
         
-        subscribe()
+        $user.sink { [weak self] user in
+            self?.unsubscribe()
+            self?.subscribe(user: user)
+        }
+        .store(in: &cancelables)
     }
     
     deinit {
         unsubscribe()
     }
     
-    func subscribe() {
+    func subscribe(user: User? = nil) {
         guard listenerRegistration == nil else { return }
+        guard let localUser = user ?? self.user else { return }
         let query = firestore.collection(Reminder.collectionName)
+            .whereField("userId", isEqualTo: localUser.uid)
         listenerRegistration = query
             .addSnapshotListener { [weak self] (querySnapshot, error) in
                 guard let documents = querySnapshot?.documents else {
@@ -54,9 +62,12 @@ public class RemindersRepository: ObservableObject {
     }
     
     func addReminder(_ reminder: Reminder) throws {
+        var mutableReminder = reminder
+        mutableReminder.userId = user?.uid
+        
         try firestore
             .collection(Reminder.collectionName)
-            .addDocument(from: reminder)
+            .addDocument(from: mutableReminder)
     }
     
     func updateReminder(_ reminder: Reminder) throws {
