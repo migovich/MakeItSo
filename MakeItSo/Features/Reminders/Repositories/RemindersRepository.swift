@@ -8,17 +8,23 @@
 import Foundation
 import Factory
 import FirebaseFirestore
+import FirebaseAuth
 
 public class RemindersRepository: ObservableObject {
     
     // MARK: Dependencies
     @Injected(\.firestore) var firestore
+    @Injected(\.authenticationService) var authenticationService
     
     @Published var reminders = [Reminder]()
+    @Published var user: User? = nil
     
     private var listenerRegistration: ListenerRegistration?
     
     init() {
+        authenticationService.$user
+            .assign(to: &$user)
+        
         subscribe()
     }
     

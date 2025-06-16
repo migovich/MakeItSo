@@ -25,6 +25,8 @@ enum AuthenticationFlow {
 @MainActor
 class AuthenticationViewModel: ObservableObject {
     
+    @Injected(\.authenticationService) private var authenticationService
+    
     @Published var email = ""
     @Published var password = ""
     @Published var confirmPassword = ""
@@ -86,15 +88,13 @@ class AuthenticationViewModel: ObservableObject {
         confirmPassword = ""
     }
     
-    // MARK: - Account Deletion
-    
+    // MARK: Account Deletion
     func deleteAccount() async -> Bool {
-        fatalError("Not implemented yet")
+        return await authenticationService.deleteAccount()
     }
     
-    // MARK: - Signing out
-    
+    // MARK: Signing out
     func signOut() {
-        fatalError("Not implemented yet")
+        authenticationService.signOut()
     }
 }

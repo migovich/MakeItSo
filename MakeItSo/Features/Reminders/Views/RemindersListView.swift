@@ -12,9 +12,14 @@ struct RemindersListView: View {
     @StateObject private var viewModel = RemindersListViewModel()
     @State private var isAddReminderPresented = false
     @State private var editableReminder: Reminder? = nil
+    @State private var isSettingsScreenPresented = false
     
     private func presendAddReminderView() {
         isAddReminderPresented.toggle()
+    }
+    
+    private func presentSettingsScreen() {
+        isSettingsScreenPresented.toggle()
     }
     
     var body: some View {
@@ -36,6 +41,11 @@ struct RemindersListView: View {
                 }
         }
         .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button(action: presentSettingsScreen) {
+                    Image(systemName: "gearshape")
+                }
+            }
             ToolbarItemGroup(placement: .bottomBar) {
                 Button(action: presendAddReminderView) {
                     HStack {
@@ -56,6 +66,9 @@ struct RemindersListView: View {
                 viewModel.updateReminder(reminder)
             }
         })
+        .sheet(isPresented: $isSettingsScreenPresented) {
+            SettingsView()
+        }
         .tint(.red)
     }
 }
