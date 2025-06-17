@@ -28,7 +28,7 @@ struct GoogleSignInButton: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 2) {
-                Image("Google")
+                Image("logo-google")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, alignment: .center)

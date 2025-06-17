@@ -9,14 +9,17 @@
 import Foundation
 import FirebaseAuth
 import Factory
+import AuthenticationServices
 
 public class AuthenticationService {
     
     @Injected(\.auth) private var auth
     
     @Published var user: User?
+    @Published var errorMessage: String?
     
     private var authStateHandler: AuthStateDidChangeListenerHandle?
+    private var currentNonce: String?
     
     init() {
         registerAuthStateHandler()
@@ -62,6 +65,55 @@ extension AuthenticationService {
             auth.signInAnonymously()
         } else if let user = auth.currentUser {
             print("Someone is signed in with \(user.providerID) and user ID \(user.uid)")
+        }
+    }
+}
+
+// MARK: - Sign in with Apple
+
+extension AuthenticationService {
+    @MainActor
+    func handleSignInWithAppleCompletion(_ result: Result<ASAuthorization, Error>) async -> Bool {
+        switch result {
+        case .success(let authorization):
+            if let appleIdCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+                guard let nonce = currentNonce else {
+                    fatalError("Invalid state: a login callback was received, but no login request was sent.")
+                }
+                guard let appleIdToken = appleIdCredential.identityToken else {
+                    print("Unable to fetch identify token.")
+                    return false
+                }
+                guard let appleIdTokenString = String(data: appleIdToken, encoding: .utf8) else {
+                    print("Unable to convert Apple ID token to string.")
+                    return false
+                }
+                let credential = OAuthProvider.appleCredential(withIDToken: appleIdTokenString,
+                                                               rawNonce: nonce,
+                                                               fullName: appleIdCredential.fullName)
+                do {
+                    try await auth.signIn(with: credential)
+                    return true
+                } catch {
+                    print("Error authenticating: \(error.localizedDescription)")
+                    return false
+                }
+            }
+            return true
+        case .failure(let error):
+            errorMessage = error.localizedDescription
+            return false
+        }
+    }
+    
+    func handleSignInWithAppleRequest(_ request: ASAuthorizationAppleIDRequest) {
+        request.requestedScopes = [.fullName, .email]
+        do {
+            let nonce = try CryptoUtils.randomNonceString() // A nonce is a one-time code that can be used to add an additional layer of security to the sign-in flow
+            currentNonce = nonce
+            request.nonce = CryptoUtils.sha256(nonce)
+        } catch {
+            print("Error when creating a nonce: \(error.localizedDescription)")
         }
     }
 }
