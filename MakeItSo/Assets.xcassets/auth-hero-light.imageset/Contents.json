@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "auth-hero-light.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
