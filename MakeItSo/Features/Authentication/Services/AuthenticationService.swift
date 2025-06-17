@@ -7,9 +7,11 @@
 
 
 import Foundation
+import FirebaseCore
 import FirebaseAuth
 import Factory
 import AuthenticationServices
+import GoogleSignIn
 
 public class AuthenticationService {
     
@@ -119,6 +121,42 @@ extension AuthenticationService {
             request.nonce = CryptoUtils.sha256(nonce)
         } catch {
             print("Error when creating a nonce: \(error.localizedDescription)")
+        }
+    }
+}
+
+// MARK: - Sign in with Google
+
+extension AuthenticationService {
+    @MainActor
+    func handleSignInWithGoogle(withAccountLinking: Bool = false, presentingViewController: UIViewController) async -> Bool {
+        guard let clientID = FirebaseApp.app()?.options.clientID else {
+            print("Client ID for Google Sign In not found.")
+            return false
+        }
+        
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
+        
+        do {
+            let userAuthentication = try await  GIDSignIn.sharedInstance.signIn(withPresenting: presentingViewController)
+            guard let idToken = userAuthentication.user.idToken?.tokenString else {
+                print("Error getting idToken.")
+                return false
+            }
+            let accessToken = userAuthentication.user.accessToken.tokenString
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                           accessToken: accessToken)
+            if withAccountLinking {
+                let authResult = try await user?.link(with: credential)
+                user = authResult?.user
+            } else {
+                try await auth.signIn(with: credential)
+            }
+            return true
+        } catch {
+            print("Error signing in with Google: \(error.localizedDescription)")
+            return false
         }
     }
 }

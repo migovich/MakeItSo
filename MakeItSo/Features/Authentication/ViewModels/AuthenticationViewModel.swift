@@ -111,3 +111,11 @@ extension AuthenticationViewModel {
         return await authenticationService.handleSignInWithAppleCompletion(withAccountLinking: true, result)
     }
 }
+
+// MARK: - Sign in with Google
+
+extension AuthenticationViewModel {
+    func handleSignInWithGoogle(presentingViewController: UIViewController) async -> Bool {
+        return await authenticationService.handleSignInWithGoogle(withAccountLinking: true, presentingViewController: presentingViewController)
+    }
+}

@@ -120,7 +120,13 @@ struct SignupView: View {
             Spacer()
             
             GoogleSignInButton(.signUp) {
-                // sign in with Google
+                Task {
+                    if let viewController = UIApplication.rootViewController {
+                        if await viewModel.handleSignInWithGoogle(presentingViewController: viewController) {
+                            dismiss()
+                        }
+                    }
+                }
             }
             
             SignInWithAppleButton(.signUp) { request in

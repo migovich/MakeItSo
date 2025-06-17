@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		15C8DE4C2E01904100E4D2CE /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 15C8DE4B2E01904100E4D2CE /* GoogleSignIn */; };
 		15D6AC7C2DC64C30003881FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 15D6AC7B2DC64C30003881FB /* GoogleService-Info.plist */; };
 		15D6AC7F2DC64E7C003881FB /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 15D6AC7E2DC64E7C003881FB /* FirebaseAnalytics */; };
 		15D6AC812DC64E7C003881FB /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 15D6AC802DC64E7C003881FB /* FirebaseAuth */; };
@@ -22,9 +23,22 @@
 		15E0DD332DB38A500060C594 /* MakeItSo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MakeItSo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		15C8DE4E2E01935D00E4D2CE /* Exceptions for "MakeItSo" folder in "MakeItSo" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 15E0DD322DB38A500060C594 /* MakeItSo */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		15E0DD352DB38A500060C594 /* MakeItSo */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				15C8DE4E2E01935D00E4D2CE /* Exceptions for "MakeItSo" folder in "MakeItSo" target */,
+			);
 			path = MakeItSo;
 			sourceTree = "<group>";
 		};
@@ -36,6 +50,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				15D6AC7F2DC64E7C003881FB /* FirebaseAnalytics in Frameworks */,
+				15C8DE4C2E01904100E4D2CE /* GoogleSignIn in Frameworks */,
 				15D6AC812DC64E7C003881FB /* FirebaseAuth in Frameworks */,
 				15D6AC872DC650E8003881FB /* FirebaseCrashlytics in Frameworks */,
 				15E334342DE8186B00601FAD /* FactoryKit in Frameworks */,
@@ -92,6 +107,7 @@
 				15D6AC862DC650E8003881FB /* FirebaseCrashlytics */,
 				15E334312DE8186B00601FAD /* Factory */,
 				15E334332DE8186B00601FAD /* FactoryKit */,
+				15C8DE4B2E01904100E4D2CE /* GoogleSignIn */,
 			);
 			productName = MakeItSo;
 			productReference = 15E0DD332DB38A500060C594 /* MakeItSo.app */;
@@ -124,6 +140,7 @@
 			packageReferences = (
 				15D6AC7D2DC64E7C003881FB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				15E334302DE8186B00601FAD /* XCRemoteSwiftPackageReference "Factory" */,
+				15C8DE4A2E01904100E4D2CE /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 15E0DD342DB38A500060C594 /* Products */;
@@ -288,6 +305,7 @@
 				DEVELOPMENT_TEAM = 9JKNSZY8H2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MakeItSo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -317,6 +335,7 @@
 				DEVELOPMENT_TEAM = 9JKNSZY8H2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MakeItSo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -360,6 +379,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		15C8DE4A2E01904100E4D2CE /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 		15D6AC7D2DC64E7C003881FB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -379,6 +406,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		15C8DE4B2E01904100E4D2CE /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 15C8DE4A2E01904100E4D2CE /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
 		15D6AC7E2DC64E7C003881FB /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 15D6AC7D2DC64E7C003881FB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
